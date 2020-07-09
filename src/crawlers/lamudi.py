@@ -71,25 +71,41 @@ class LaMudi(BaseCrawler):
             # Remove url that were scraped
             self.urls.pop(idx)
         
-            
-            '''self.wait('/html/body/script[2]/text()', 'XPATH')
+            """
+            self.wait('/html/body/script[2]/text()', 'XPATH')
             JSON_DATA = "return JSON.stringify(dataLayer)"
 
             try:
                 bldg_data = self.driver.execute_script(JSON_DATA)
                 bldg_data = json.loads(bldg_data)[0]
+                print(bldg_data)
 
                 self.get_building_features(main_url, bldg_data)
             except JavascriptException:
-                print(self.driver.current_url)'''
+                print(self.driver.current_url)
+            """
 
     def get_building_features(self, url, is_development=False):
         """Fetch all the building features."""
 
         self.data = format_data()
+        self.building_geolocalization()
+        if self.validate_geolocalization:
+            self.get_general_information()
+            self.results.append(self.data)
+
         # Extraer informacion de la pagina
 
+    def get_general_information(self):
+        if self.wait('/html/body/div[3]/div/h1', "XPATH"):
+            self.data["publication_name"] = self.find("/html/body/div[3]/div/h1", "XPATH").text
+            self.data["description"] = self.find("ViewMore-text-description", "CLASS_NAME").text
+
     def building_geolocalization(self):
+        if self.wait('js-developmentMap', "ID"):
+            map_lat_lng = self.find('js-developmentMap', "ID")
+            self.data['address']['latitude'] = map_lat_lng.get_attribute('data-lat')
+            self.data['address']['longitude'] = map_lat_lng.get_attribute('data-lng')
         # Address
         # Añadir xpath
 

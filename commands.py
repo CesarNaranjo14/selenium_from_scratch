@@ -52,7 +52,8 @@ def start(page):
                               municipality=municipality)
 
         try:
-            crawler.main()
+            url='https://www.lamudi.com.mx/amplia-y-comoda-residencia-en-san-angel-en-venta.html'
+            crawler.debug_mode(url, 'get_building_features')
 
         except Exceptions as error:
             current_app.logger.error(f"""Failed process for {page} with data {colonia} -
