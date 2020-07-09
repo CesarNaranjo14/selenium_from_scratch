@@ -46,6 +46,7 @@ class BaseCrawler:
         driver: Chromedriver by default.
         municipality: "coyoacán", "benito-juárez" and so on.
         results: list of dictionaries of buildings' data.
+        urls: list of all urls fetched for the whole search.
     """
 
     operation: str
@@ -72,19 +73,21 @@ class BaseCrawler:
                 EC.presence_of_element_located((by, html_element))
             )
 
+        # Siempre poner la excepcion especifica
         except TimeoutException:
             return False
 
         return True
 
+    # Regresa un error, se tiene que poner dentro de un try, except.
     def find(self, html_element, locator):
-        """Replace large syntaxis for finding one element."""
+        """Replace large syntaxis to find one element."""
 
         by = getattr(By, locator)
         return self.driver.find_element(by, html_element)
 
     def find_all(self, html_element, locator):
-        """Replace large syntaxis for finding many elements."""
+        """Replace large syntaxis to find many elements."""
         by_locator = getattr(By, locator)
         return self.driver.find_elements(by_locator, html_element)
 
@@ -95,6 +98,7 @@ class BaseCrawler:
         self.cat_operation = catalogue_operation(self.operation)
         self.cat_property_type = catalogue_property_type(self.property_type)
 
+    # por esto, se deben de atomizar bien las tareas de los crawlers.
     def debug_mode(self, url, method):
         """To speed up the proccess of debug crawlers errors."""
 

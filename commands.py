@@ -11,22 +11,14 @@ from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import ElementClickInterceptedException
 
 # Modules
-from .src.crawlers.inmuebles24 import Inmuebles24
-from .src.crawlers.icasas import iCasas
-from .src.crawlers.lamudi import LaMudi
-from .src.crawlers.vivanuncios import Vivanuncios
-from .src.crawlers.propiedades import Propiedades
+from src.crawlers.lamudi import LaMudi
 
-from .src.base.constants import MEMORY_PATH
+from src.base.constants import MEMORY_PATH
 
 crawlers = Blueprint('crawlers', __name__)
 
 
 PAGES = {
-    "inmuebles24": Inmuebles24,
-    "icasas": iCasas,
-    "vivanuncios": Vivanuncios,
-    "propiedades": Propiedades,
     "lamudi": LaMudi,
 }
 

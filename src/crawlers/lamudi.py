@@ -7,7 +7,6 @@ from selenium.webdriver.support.ui import Select
 from selenium.common.exceptions import JavascriptException
 
 # Modules
-from ..apis.google_maps_api import reverse_geocode
 from ..base.base_crawler import BaseCrawler
 from ..base.base_functions import (
     format_data,
@@ -21,11 +20,16 @@ from ..base.page_constants import CRAWLERS_URLS
 class LaMudi(BaseCrawler):
 
     def select_operation(self):
-        if self.operation == "venta":
-            self.find("//div[@data-value='for-sale']", "XPATH").click()
+        """Define the type of operation."""
 
-        else:
-            self.find("//div[@data-value='for-rent']", "XPATH").click()
+        operations = {
+            'renta': 'for-rent',
+            'venta': 'for-sale'
+        }
+        
+        operation = operations[self.operation]
+
+        self.find(f"//div[@data-value='{operation}']", "XPATH").click()
 
     def select_property_type(self):
         if self.property_type:
@@ -40,6 +44,7 @@ class LaMudi(BaseCrawler):
     def navigate(self):
         """Navigate untill all pages are scraped."""
 
+        # Agregar sufijo a la url
         base_url = self.driver.current_url + "?page={}"
 
         URLS = "//h3[@class='ListingCell-KeyInfo-title']/a"
@@ -62,7 +67,12 @@ class LaMudi(BaseCrawler):
         for idx, main_url in enumerate(self.urls):
             self.driver.get(main_url)
 
-            self.wait('/html/body/script[2]/text()', 'XPATH')
+            self.get_building_features(main_url)
+            # Remove url that were scraped
+            self.urls.pop(idx)
+        
+            
+            '''self.wait('/html/body/script[2]/text()', 'XPATH')
             JSON_DATA = "return JSON.stringify(dataLayer)"
 
             try:
@@ -71,18 +81,15 @@ class LaMudi(BaseCrawler):
 
                 self.get_building_features(main_url, bldg_data)
             except JavascriptException:
-                print(self.driver.current_url)
+                print(self.driver.current_url)'''
 
-            # Remove url that were scraped
-            self.urls.pop(idx)
-
-    def get_building_features(self, url, bldg_data, is_development=False):
+    def get_building_features(self, url, is_development=False):
         """Fetch all the building features."""
 
         self.data = format_data()
         # Extraer informacion de la pagina
 
-    def building_address(self, bldg_data):
+    def building_geolocalization(self):
         # Address
         # Añadir xpath
 
@@ -95,12 +102,8 @@ class LaMudi(BaseCrawler):
             return False
 
     def building_amenities(self, bldg_data):
-        # Amenities
-        amenities = bldg_data["attributes"]["outdoor_features"]
-        amenities += bldg_data["attributes"]["indoor_features"]
-        amenities += bldg_data["attributes"]["other_features"]
-
-        self.data["amenities"] = amenities
+        """Amenities."""
+        pass
 
     def main(self):
 

@@ -3,9 +3,8 @@
 import os
 
 from flask import Flask
-# from .commands import crawlers
-from .commands_multithread_multiprocessing import crawlers
-from .create_pickles import create_pickles
+from commands import crawlers
+from create_pickles import create_pickles
 
 
 app = Flask(__name__)
