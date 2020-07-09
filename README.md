@@ -17,7 +17,7 @@ pipenv install --dev
 flask create_pickles start
 ```
 
-# Correr crawlers
+## Correr crawlers
 ```
 flask crawlers start crawler_name
 ```
@@ -28,5 +28,10 @@ Páginas:
 * propiedades
 * lamudi
 
+## Documentación
+
+[Locarizadores](https://www.selenium.dev/documentation/en/getting_started_with_webdriver/locating_elements/) para la extracción de información:
+
+
 ### Notas
-1.- Si se quiere ver el GUI (Interfaz gráfica) pasar el parametro headless: false en el archivo config.json.
+1.- Si se quiere ver el GUI (Interfaz gráfica) pasar el parametro headless: false en el archivo .env.
