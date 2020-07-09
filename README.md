@@ -20,13 +20,8 @@ flask create_pickles start
 ## Correr crawlers
 ```
 flask crawlers start crawler_name
+flask crawlers start lamudi
 ```
-Páginas:
-* inmuebles24
-* icasas
-* vivanuncios
-* propiedades
-* lamudi
 
 ## Documentación
 
